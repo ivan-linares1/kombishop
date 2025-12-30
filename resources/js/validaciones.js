@@ -97,7 +97,8 @@ if (window.top !== window.self) {
     window.location = '/403';
 }
 
-
+/*Cada 4 minutos mientras la pestaña este abierta mandara una señal de activo para que las sesiones solo se 
+cierren cuando se trabe el navegador, cerraron la pestaña  esta funcion va en conjunto con el middleware de limites de sesiones*/
 (function () {
 
     const tokenMeta = document.querySelector('meta[name="csrf-token"]');
@@ -115,5 +116,5 @@ if (window.top !== window.self) {
             },
             credentials: 'same-origin'
         });
-    }, 60000); // 1 minuto en milisegundos
+    }, 24000); // 4 minutos en milisegundos
 })();
