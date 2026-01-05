@@ -97,26 +97,17 @@ if (window.top !== window.self) {
     window.location = '/403';
 }
 
-//funcion que se encarga de mandar el ping de activa cada minuto para que no se marque como inactiva cuanod no se usa
+/*Cada 4 minutos mientras la pestaña este abierta mandara una señal de activo para que las sesiones solo se 
+cierren cuando se trabe el navegador, cerraron la pestaña  esta funcion va en conjunto con el middleware de limites de sesiones*/
 (function () {
-    console.log('🫀 Heartbeat inicializado');
 
     const tokenMeta = document.querySelector('meta[name="csrf-token"]');
-
-    if (!tokenMeta) {
-        console.error('❌ No se encontró el meta csrf-token');
-        return;
-    }
-
     const token = tokenMeta.getAttribute('content');
 
     let contador = 0;
 
     setInterval(() => {
         contador++;
-
-        console.log(`🔄 Heartbeat #${contador} → enviando...`);
-
         fetch('/heartbeat', {
             method: 'POST',
             headers: {
@@ -124,17 +115,6 @@ if (window.top !== window.self) {
                 'Accept': 'application/json'
             },
             credentials: 'same-origin'
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log(`✅ Heartbeat #${contador} OK (status ${response.status})`);
-            } else {
-                console.error(`⚠️ Heartbeat #${contador} ERROR (status ${response.status})`);
-            }
-        })
-        .catch(error => {
-            console.error(`💥 Heartbeat #${contador} FALLÓ`, error);
         });
-
-    }, 60000); // 1 minuto
+    }, 24000); // 4 minutos en milisegundos
 })();

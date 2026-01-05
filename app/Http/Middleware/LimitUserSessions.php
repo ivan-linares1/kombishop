@@ -17,8 +17,8 @@ class LimitUserSessions
         $user = Auth::user();
         $maxAllowed = (int) ($user->max_sessions ?? 1);
 
-        // Ventana de vida real (ej: 2 minutos)
-        $activeWindow = now()->subMinutes(2)->timestamp;
+        //cada cierto tiempo hace el chequeo de ultima actividad (ejemplo si pasaron 5 minutos sin respuesta se cierra la sesion)
+        $activeWindow = now()->subMinutes(5)->timestamp;
 
         // Limpia sesiones muertas
         DB::table('sessions')
