@@ -67,6 +67,7 @@ class Sincronizar extends Command
                 'Cambios_Monedas' => 'SBO_Actualiza_Tipo_Cambio_ORTT',
                 'DocNum' => 'SBO_No_Coti_SAP_OQUT',
                 'DocNumP' => 'SBO_No_Ped_SAP_ORDR',
+                'stock' => 'SBO_Stock_Actualiza',
                 'CotizacionEstatus' => 'SBO_Estatus_Coti_SAP_OQUT',
                 'PedidoEstatus' => 'SBO_Estatus_Pedi_SAP_ORDR'
             ];

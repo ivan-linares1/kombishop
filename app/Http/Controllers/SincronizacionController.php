@@ -14,6 +14,7 @@ use App\Models\Moneda;
 use App\Models\MonedaCambio;
 use App\Models\Pedido;
 use App\Models\Precios;
+use App\Models\Stock;
 use App\Models\Vendedores;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -23,7 +24,7 @@ class SincronizacionController extends Controller
     // Conexión al Web Service con manejo de errores
     private function ConexionWBS()
     {
-        $url = "http://10.10.1.31:8083/KombiService.asmx?wsdl";
+        $url = "http://10.10.1.45:8083/KombiService.asmx?wsdl";
         $token = "12345678";
 
         try {
@@ -806,7 +807,7 @@ class SincronizacionController extends Controller
     }
 
 
-    private function stock($xmlResponse, $modo, $cli)//OITM agrega el stock a cada acticulo 
+    private function stock($xmlResponse, $modo, $cli)//OITW agrega el stock de cada almacen 
     {
         //Aqui valido si existen datos en el xml antes de procesarlo
         if (!isset($xmlResponse->Stock)) 
@@ -824,19 +825,22 @@ class SincronizacionController extends Controller
 
         foreach ($xmlResponse->Stock as $Stock) {
             try {
-                // actualizar registro
-                $registro = Articulo::find($Stock->ItemCode);
-                $registro->update([ 'OnHand' => $Stock->OnHand ]);
+                // insertat o actualizar registro
+                $registro = Stock::updateOrInsert(
+                    [   
+                        'ItemCode' =>  $Stock->ItemCode,
+                        'WhsCode'  =>  $Stock->WhsCode,
+                    ],
+                    [  'OnHand' => $Stock->OnHand, ]
+                );
 
                 if($registro){ $insertados++;}// Si se inserta un nuevo registro o se actualiza, contamos como exitoso.
             } catch (\Throwable $e) {
-                $errores++; Log::channel('sync')->error("OITM: " . "Error al actualizar el stock: ".$Stock->ItemCode. "=> " . $e->getMessage());
+                $errores++; Log::channel('sync')->error("OITW: " . "Error al actualizar el stock: ".$Stock->ItemCode. "=> " . $e->getMessage());
             }           
         }
          return $this->aux('Actualizacion de Stock', $total, $insertados, $errores, $warnings, $modo );
-    }
-
-
+    }          
 
     //esta funcion se encarga de retornar los mensajes 
     //$servicio = nombre del servicio que se esta trabajando

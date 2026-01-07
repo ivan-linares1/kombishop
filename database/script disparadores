@@ -1,0 +1,54 @@
+/*Disparador AFTER INSERT */
+DELIMITER $$
+
+CREATE TRIGGER trg_oitw_ai
+AFTER INSERT ON OITW
+FOR EACH ROW
+BEGIN
+    UPDATE OITM
+    SET OnHand = (
+        SELECT IFNULL(SUM(OnHand), 0)
+        FROM OITW
+        WHERE ItemCode = NEW.ItemCode
+    )
+    WHERE ItemCode = NEW.ItemCode;
+END$$
+
+DELIMITER ;
+
+
+/* Disparador AFTER UPDATE */
+DELIMITER $$
+
+CREATE TRIGGER trg_oitw_au
+AFTER UPDATE ON OITW
+FOR EACH ROW
+BEGIN
+    UPDATE OITM
+    SET OnHand = (
+        SELECT IFNULL(SUM(OnHand), 0)
+        FROM OITW
+        WHERE ItemCode = NEW.ItemCode
+    )
+    WHERE ItemCode = NEW.ItemCode;
+END$$
+
+DELIMITER ;
+
+/* Disparador AFTER DELETE */
+DELIMITER $$
+
+CREATE TRIGGER trg_oitw_ad
+AFTER DELETE ON OITW
+FOR EACH ROW
+BEGIN
+    UPDATE OITM
+    SET OnHand = (
+        SELECT IFNULL(SUM(OnHand), 0)
+        FROM OITW
+        WHERE ItemCode = OLD.ItemCode
+    )
+    WHERE ItemCode = OLD.ItemCode;
+END$$
+
+DELIMITER ;

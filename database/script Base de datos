@@ -105,6 +105,15 @@ CREATE TABLE OITM(
   FOREIGN KEY (Id_imagen) REFERENCES Imagenes(Id_imagen)
 );
 
+/* Stock de los productos por almacen */
+CREATE TABLE OITW(
+  ItemCode VARCHAR(50),
+  WhsCode VARCHAR(8),
+  OnHand int,
+  PRIMARY KEY(ItemCode, WhsCode),
+  FOREIGN KEY (ItemCode) REFERENCES OITM(ItemCode)
+);
+
 /* Precios de productos */
 CREATE TABLE ITM1(
   ItemCode VARCHAR(50) NOT NULL,

@@ -27,7 +27,7 @@
                 /*OEDG 2*/ ['icon' => 'bi-tags-fill icon-descuentos',       'titulo' => 'Grupos de Descuentos',    'texto' => 'Sincroniza grupos de descuentos.',                   'servicio' => 'Grupo_Descuentos',        'metodo1' => 'SBO_Grupos_Agrgega_Todo_Descuentos_OEDG',          'metodo2' => 'SBO_Grupos_Actualiza_Descuentos_OEDG'],
                 /*EDG1 5*/ ['icon' => 'bi-percent icon-descuento',          'titulo' => 'Descuentos',              'texto' => 'Sincroniza los descuentos.',                         'servicio' => 'Descuentos_Detalle',      'metodo1' => 'SBO_Grupos_Descuentos_EDG1',                       'metodo2' => 'SBO_Grupos_Actualiza_Descuentos_EDG1'],
                 /*OSLP 1*/ ['icon' => 'bi-person-lines-fill icon-vendedor', 'titulo' => 'Vendedores',              'texto' => 'Sincroniza los vendedores.',                         'servicio' => 'Vendedores',              'metodo1' => 'SBO_Agrega_Todo_Vendedores_OSLP',                   ],
-                /*stock */ ['icon' => 'bi bi-graph-up icon-stock',          'titulo' => 'Stock',                   'texto' => 'Sincroniza el stock de articulos.',                  'servicio' => 'stock',                   'metodo1' => 'SBO_Stock',                                         ],
+                /*stock */ ['icon' => 'bi bi-graph-up icon-stock',          'titulo' => 'Stock',                   'texto' => 'Sincroniza el stock de articulos.',                  'servicio' => 'stock',                   'metodo1' => 'SBO_Stock',                                         'metodo2' => 'SBO_Stock_Actualiza'],
                 /*CotSt2*/ ['icon' => 'bi-check-circle icon-cotEstatus',    'titulo' => 'Estado Cotizacion',       'texto' => 'Sincroniza el estado de las cotizaciones.',          'servicio' => 'CotizacionEstatus',       'metodo1' => 'SBO_Estatus_Coti_SAP_OQUT_TODAS',                   'metodo2' => 'SBO_Estatus_Coti_SAP_OQUT'],
                 /*PedSt2*/ ['icon' => 'bi-check2-circle icon-pedEstatus',   'titulo' => 'Estado Pedido',           'texto' => 'Sincroniza el estado de los pedidos.',               'servicio' => 'PedidoEstatus',           'metodo1' => 'SBO_Estatus_Pedi_SAP_ORDR_TODAS',                   'metodo2' => 'SBO_Estatus_Pedi_SAP_ORDR'],
 //32
@@ -51,7 +51,7 @@
                             <button type="submit" class="btn btn-success w-100">Cargar Todo</button>
                         </form>
                         <!--Este formulario de boton esta condicionado para que algunas card de servicio especifico no se muestre ya que no cuentan con un segundo metodo-->
-                        @if ($card['servicio'] != 'Monedas' && $card['servicio'] != 'Vendedores' && $card['servicio'] != 'stock')
+                        @if ($card['servicio'] != 'Monedas' && $card['servicio'] != 'Vendedores')
                             <form action="{{ route('Sincronizar', ['servicio' => $card['servicio'], 'metodo' => $card['metodo2'], 'modo' => 'Actualizacion']) }}" 
                                 method="POST" class="flex-fill" style="flex: 1 1 48%;">
                                 @csrf
