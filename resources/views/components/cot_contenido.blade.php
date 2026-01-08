@@ -1,4 +1,8 @@
 <!-- Scripts necesarios -->
+<script>
+    window.ROL_USUARIO = {{ Auth()->user()->rol_id }};
+</script>
+
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
@@ -16,7 +20,7 @@
                 <th>Precio</th>
                 <th>Moneda</th>
                 <th>Impuesto</th>
-                <th>Cantidad</th>
+                <th style="text-align: center">Cantidad</th>
                 <th>Promociones</th>
                 <th>SubTotal</th>
                 <th style="text-align: center">% Descuento</th>
@@ -75,6 +79,13 @@
                     document.addEventListener('DOMContentLoaded', function() {
                         const lineas = @json($lineasComoArticulos);
                         lineas.forEach(art => agregarArticulo(art));
+
+                        setTimeout(() => {
+        document
+            .querySelectorAll('#tablaArticulos tbody tr')
+            .forEach(fila => verificarStockFila(fila));
+    }, 0);
+    
                     });
                 </script>
             @endif

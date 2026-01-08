@@ -132,6 +132,30 @@ span.form-control {
     width: 100%;
 }
 
+/* Ajustar input cantidad para que su ancho sea automático y se vea bien */
+.table-scroll input.cantidad {
+    width: auto;          /* ancho automático según contenido */
+    min-width: 50px;      /* ancho mínimo para que no se vea ridículo */
+    max-width: 100px;     /* máximo ancho para no desbordar */
+    padding: 4px 8px;     /* un poco de padding para que se vea cómodo */
+    font-size: 0.95rem;   /* acorde con el tamaño de la tabla */
+    box-sizing: border-box; /* que el padding no aumente el ancho */
+    text-align: center;   /* para que el número quede centrado */
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Opcional: para que la celda no se estreche demasiado */
+.table-scroll td input.cantidad {
+    white-space: nowrap;
+}
+
+/* Si quieres que la columna de cantidad tenga un ancho fijo mínimo */
+.table-scroll td:nth-child(9) {
+    min-width: 80px;
+}
+
+
 
 /* =================== TOTALES =================== */
 .row > .col-md-4 table {

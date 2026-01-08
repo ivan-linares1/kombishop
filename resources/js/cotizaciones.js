@@ -1,5 +1,7 @@
 //NO MOVERLE SI FUNCIONA Y NO SE COMO, CUALQUIER INTENTO DE MOVERLE VAS A LLORAR POR 1 CENTAVO.
 //Aqui se maneja todo lo que tiene que ver con cotizaciones y pedidos ya que comparten misma logica esta parte es muy sensible ya que hace las cuentas matematicas
+const rolUsuario = window.ROL_USUARIO ?? null;
+const rolesConStock = [1, 2, 4];
 
 // ================================
 // FECHA MÍNIMA PARA ENTREGA
@@ -264,6 +266,7 @@ window.agregarArticulo = function(art) {
     fila.dataset.monedaOriginal = JSON.stringify(art.precio.moneda);
     fila.dataset.itmsGrpCod = art.ItmsGrpCod;
     fila.dataset.baseline = art.BaseLine ?? null;  
+    fila.dataset.itemcode = art.ItemCode;
 
     const monedaCambioID = parseInt(document.querySelector('select[name="currency_id"]').value);
     const monedaCambio = monedas.find(m => m.Currency_ID == monedaCambioID);
@@ -286,7 +289,7 @@ window.agregarArticulo = function(art) {
         <td class="precio">${Number(precio || 0).toFixed(2)}</td>
         <td class="moneda">${monedaCambio ? monedaCambio.Currency : art.precio.moneda.Currency}</td>
         <td class="ivaPorcentaje">IVA ${Number(IVA.Rate).toFixed(0)}%</td>
-        <td><input type="number" value="${cantidad}" min="1" class="form-control form-control-sm cantidad"></td>
+        <td><div class="d-flex align-items-center gap-2"><input type="number" value="${cantidad}" min="1" class="form-control form-control-sm cantidad"> ${rolesConStock.includes(rolUsuario) ? '<span class="stock-icon">⏳</span>' : ''}</div></td>
         <td class="promocion">Promociones</td>
         <td class="subtotal"></td>
         <td class="descuentoporcentaje">${descuento} %</td>
@@ -298,10 +301,19 @@ window.agregarArticulo = function(art) {
     tabla.insertBefore(fila, tabla.lastElementChild);
 
     // Eventos
-    fila.querySelector('.cantidad').addEventListener('input', calcularTotales);
+    //fila.querySelector('.cantidad').addEventListener('input', calcularTotales);
+    const cantidadInput = fila.querySelector('.cantidad');
+    cantidadInput.addEventListener('input', function () {
+        calcularTotales();
+        verificarStockFila(fila);
+    });
+
     fila.querySelector('button').addEventListener('click', function() { eliminarFila(this); });
 
     calcularTotales();
+
+    // validar al agregar
+   setTimeout(() => verificarStockFila(fila), 50);
 
     // Cerrar modal si está abierto
     const modalEl = document.getElementById('modalArticulos');
@@ -455,7 +467,7 @@ $(document).ready(function() {
     //configuracion 
     var tablaModal = $('#tablaModalArticulos').DataTable({
         pageLength: 25,
-        language: { url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' },
+        language: { url: '/datatables/i18n/es-ES.json' },
         ordering: false,
         searching: true
     });
@@ -625,8 +637,8 @@ $("#guardarCotizacion").on("click", function(e) {
 $(document).ready(function() {
     $.ajaxSetup({
         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    }
     });
 });
 
@@ -730,3 +742,39 @@ $("#btnPedido").on("click", function(e) {
         }
     });
 });
+
+window.verificarStockFila = function (fila) {
+    if (!rolesConStock.includes(rolUsuario)) return;
+
+    const cantidad = Number(fila.querySelector('.cantidad')?.value || 0);
+    const itemCode = fila.querySelector('.itemcode')?.textContent?.trim();
+    const icono = fila.querySelector('.stock-icon');
+
+    if (!itemCode || !icono) return;
+
+    icono.textContent = '⏳';
+
+    $.ajax({
+        url: `/Pedidos/Articulo/stock`,
+        type: 'POST',
+        data: {
+            articulos: [{
+                itemCode: itemCode,
+                cantidad: cantidad
+            }]
+        },
+        success: function (response) {
+            if (response.success) {
+                icono.textContent = '✔';
+                icono.style.color = 'green';
+            } else {
+                icono.textContent = '✖';
+                icono.style.color = 'red';
+            }
+        },
+        error: function () {
+            icono.textContent = '✖';
+            icono.style.color = 'red';
+        }
+    });
+}
