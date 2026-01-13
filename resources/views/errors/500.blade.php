@@ -146,14 +146,14 @@
     <p>No es tu culpa, estamos trabajando para solucionarlo.</p>
     <a href="{{ url('/') }}">Volver al inicio</a>
 
-    {{-- Mostrar detalles SOLO en desarrollo --}}
+    {{-- Mostrar detalles SOLO en desarrollo 
     @if(isset($exception))
       <div class="error-details">
         <strong>Detalles del error:</strong><br>
         {{ $exception->getMessage() }}
       </div>
     @endif
-  </div>
+  </div>--}}
 
   <div class="bubbles">
     <span></span><span></span><span></span>

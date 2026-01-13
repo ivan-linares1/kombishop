@@ -302,7 +302,7 @@ class SincronizacionController extends Controller
         return $this->aux('Marcas', $total, $insertados, $errores, 0, $modo );
     }
 
-    private function ListaPrecio($xmlResponse, $modo, $cli)//ITM1
+    private function ListaPrecio($xmlResponse, $modo, $cli)//ITM1 DE CADA ARTICULO
     {
         //Aqui valido si existen datos en el xml antes de procesarlo
         if (!isset($xmlResponse->ListaP)) {
