@@ -103,7 +103,6 @@ class Archivos_Sincronizasores extends Controller
        return $this->regresos($mensajes);
     }
 
-
     public function Monedas($rutaXml, $CLI)//OCRN
     {
         $xml = $this->Archivos($rutaXml, $CLI);
