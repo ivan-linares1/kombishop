@@ -475,14 +475,18 @@ class Archivos_Sincronizasores extends Controller
         if($rutaXml == 'C:\SFTP_MiKombitec\data\Descuentos_Cantidad_Actualiza_' && $CLI == false)
             return ['error' => 'ERROR: Proceso muy grande usa la Tarea Programada o la Terminal del Sistema'];
         if($rutaXml == 'C:\SFTP_MiKombitec\data\Descuentos_Cantidad_Actualiza_')
-            $rutaXmlN = $rutaXml.$Count_aux.'\Descuentos_Cantidad_Actualiza_'.$Count_aux.'.xml';      
+        {
+            $rutaXmlN = $rutaXml.$Count_aux.'\Descuentos_Cantidad_Actualiza_'.$Count_aux.'.xml';  
+            Log::channel('sync')->notice("Inicio del servicio $Count_aux");    
+        }
         else
         {
             $rutaXmlN = $rutaXml;
             $Count_aux = 4;
+            Log::channel('sync')->notice("Inicio del servicio de actualizacion ");
         }
             
-        Log::channel('sync')->notice("Inicio del servicio $Count_aux");
+        
         $xml = $this->Archivos($rutaXmlN, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
@@ -540,9 +544,14 @@ class Archivos_Sincronizasores extends Controller
             $Count_aux++;
            return $this->DescuentosDetalle($rutaXml, $CLI, $Count_aux, $total + $total_i, $insertados + $insertados_i,  $warnings + $warnings_i, $errores + $errores_i);
         }
-        Log::channel('sync')->notice("Fin del servicio $Count_aux con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
+         if($rutaXmlN == $rutaXml)
+            Log::channel('sync')->notice("Fin del servicio de actualizacion con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
+        else
+            Log::channel('sync')->notice("Fin del servicio $Count_aux con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
+
         $totalBD = $insertados + $insertados_i;
         Log::channel('sync')->notice("Insertados o actualizados: $totalBD");
+       
         return $this->Mensajes($total + $total_i, $insertados + $insertados_i + $warnings + $warnings_i, $errores + $errores_i, $CLI);
     }
 
