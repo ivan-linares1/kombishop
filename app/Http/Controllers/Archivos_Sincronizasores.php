@@ -64,7 +64,6 @@ class Archivos_Sincronizasores extends Controller
 
     private function regresos($mesajes)
     {
-        //dd(session()->isStarted());
         if (isset($mesajes['warning'])) return redirect()->route('sincronizadores')->with('warning', $mesajes['warning']);
         if (isset($mesajes['error'])) return redirect()->route('sincronizadores')->with('error', $mesajes['error']);
         if (isset($mesajes['success'])) return redirect()->route('sincronizadores')->with('success', $mesajes['success']);
@@ -471,13 +470,13 @@ class Archivos_Sincronizasores extends Controller
         return $this->Mensajes($total, $insertados, $errores, $CLI);
     }
 
-    /*la variable $Count_aux lleva el control de cuantas veces se va a recursar la funcion  C:\SFTP_MiKombitec\data\Descuentos_Cantidad_Actualiza_ */
+    /*la variable $Count_aux lleva el control de cuantas veces se va a recursar la funcion */
     public function DescuentosDetalle($rutaXml, $CLI, $Count_aux, $total_i, $insertados_i,  $warnings_i, $errores_i) //EDG1
     { 
         $rutaXmlN='';
-        if($rutaXml == 'C:\Users\KOM090\Documents\Nueva\Descuentos_Cantidad_Actualiza_' && $CLI == false)
+        if($rutaXml == 'C:\SFTP_MiKombitec\data\Descuentos_Cantidad_Actualiza_' && $CLI == false)
             return ['error' => 'ERROR: Proceso muy grande usa la Tarea Programada o la Terminal del Sistema'];
-        if($rutaXml == 'C:\Users\KOM090\Documents\Nueva\Descuentos_Cantidad_Actualiza_')
+        if($rutaXml == 'C:\SFTP_MiKombitec\data\Descuentos_Cantidad_Actualiza_')
             $rutaXmlN = $rutaXml.$Count_aux.'\Descuentos_Cantidad_Actualiza_'.$Count_aux.'.xml';      
         else
         {
@@ -772,7 +771,7 @@ class Archivos_Sincronizasores extends Controller
                 $errores++; Log::channel('sync')->error("ORDR: " . "Error al actualizar el pedido: ".$pedido->ID_COT_KombiShop. "=> " . $e->getMessage());
             }           
         }
-        $this->NoInsertados('C:\Users\KOM090\Documents\Nueva\PedidosNoInsertados\PedidosNoInsertados.xml', $CLI);
+        $this->NoInsertados('C:\SFTP_MiKombitec\data\PedidosNoInsertados\PedidosNoInsertados.xml', $CLI);
         return $this->Mensajes($total, $insertados, $errores, $CLI);
     }
 
