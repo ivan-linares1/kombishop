@@ -64,7 +64,6 @@ class Archivos_Sincronizasores extends Controller
 
     private function regresos($mesajes)
     {
-        //dd(session()->isStarted());
         if (isset($mesajes['warning'])) return redirect()->route('sincronizadores')->with('warning', $mesajes['warning']);
         if (isset($mesajes['error'])) return redirect()->route('sincronizadores')->with('error', $mesajes['error']);
         if (isset($mesajes['success'])) return redirect()->route('sincronizadores')->with('success', $mesajes['success']);
@@ -104,13 +103,12 @@ class Archivos_Sincronizasores extends Controller
        return $this->regresos($mensajes);
     }
 
-
     public function Monedas($rutaXml, $CLI)//OCRN
     {
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->Moneda)) { if($CLI) { echo "XML sin monedas\n"; return; }
@@ -146,8 +144,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
-        
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         if (!isset($xml->Articulo)) { if($CLI) { echo "XML sin articulos\n"; return; }
             return redirect()->back()->with('warning', 'XML sin articulos');
@@ -188,7 +185,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->CAT_LP)) { if($CLI) { echo "XML sin lista de precios\n"; return; }
@@ -222,7 +219,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->Marcas)) { if($CLI) { echo "XML sin marcas\n"; return; }
@@ -262,7 +259,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->ListaP)) { if($CLI) { echo "XML sin lista de precio\n"; return; }
@@ -313,7 +310,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
 
         if (!isset($xml->Cliente)) { if($CLI) { echo "XML sin clientes\n"; return; }
@@ -358,7 +355,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->Direcciones)) { if($CLI) { echo "XML sin lista de precios\n"; return; }
@@ -421,7 +418,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->GPO_Descuentos)) { if($CLI) { echo "XML sin GPO de Descuentos\n"; return; }
@@ -471,24 +468,29 @@ class Archivos_Sincronizasores extends Controller
         return $this->Mensajes($total, $insertados, $errores, $CLI);
     }
 
-    /*la variable $Count_aux lleva el control de cuantas veces se va a recursar la funcion  C:\SFTP_MiKombitec\data\Descuentos_Cantidad_Actualiza_ */
+    /*la variable $Count_aux lleva el control de cuantas veces se va a recursar la funcion */
     public function DescuentosDetalle($rutaXml, $CLI, $Count_aux, $total_i, $insertados_i,  $warnings_i, $errores_i) //EDG1
     { 
         $rutaXmlN='';
-        if($rutaXml == 'C:\Users\KOM090\Documents\Nueva\Descuentos_Cantidad_Actualiza_' && $CLI == false)
+        if($rutaXml == 'C:\SFTP_MiKombitec\data\Descuentos_Cantidad_Actualiza_' && $CLI == false)
             return ['error' => 'ERROR: Proceso muy grande usa la Tarea Programada o la Terminal del Sistema'];
-        if($rutaXml == 'C:\Users\KOM090\Documents\Nueva\Descuentos_Cantidad_Actualiza_')
-            $rutaXmlN = $rutaXml.$Count_aux.'\Descuentos_Cantidad_Actualiza_'.$Count_aux.'.xml';      
+        if($rutaXml == 'C:\SFTP_MiKombitec\data\Descuentos_Cantidad_Actualiza_')
+        {
+            $rutaXmlN = $rutaXml.$Count_aux.'\Descuentos_Cantidad_Actualiza_'.$Count_aux.'.xml';  
+            Log::channel('sync')->notice("Inicio del servicio $Count_aux");    
+        }
         else
         {
             $rutaXmlN = $rutaXml;
             $Count_aux = 4;
+            Log::channel('sync')->notice("Inicio del servicio de actualizacion ");
         }
             
-        Log::channel('sync')->notice("Inicio del servicio $Count_aux");
+        
         $xml = $this->Archivos($rutaXmlN, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         if (!isset($xml->GPO_DescuentosEDG1) && $CLI) {  echo "XML sin datos\n"; return; }
 
@@ -542,9 +544,14 @@ class Archivos_Sincronizasores extends Controller
             $Count_aux++;
            return $this->DescuentosDetalle($rutaXml, $CLI, $Count_aux, $total + $total_i, $insertados + $insertados_i,  $warnings + $warnings_i, $errores + $errores_i);
         }
-        Log::channel('sync')->notice("Fin del servicio $Count_aux con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
+         if($rutaXmlN == $rutaXml)
+            Log::channel('sync')->notice("Fin del servicio de actualizacion con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
+        else
+            Log::channel('sync')->notice("Fin del servicio $Count_aux con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
+
         $totalBD = $insertados + $insertados_i;
         Log::channel('sync')->notice("Insertados o actualizados: $totalBD");
+       
         return $this->Mensajes($total + $total_i, $insertados + $insertados_i + $warnings + $warnings_i, $errores + $errores_i, $CLI);
     }
 
@@ -553,7 +560,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml //Errores en WEB del xml
         
         
         if (!isset($xml->VendedoresOSLP)) { if($CLI) { echo "XML sin monedas\n"; return; }
@@ -591,8 +598,8 @@ class Archivos_Sincronizasores extends Controller
     {
         $xml = $this->Archivos($rutaXml, $CLI);
 
-        if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if ($CLI  && $xml === false) return;//muestra errores en la carga del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->TipoCambioORTT)) { if($CLI) { echo "XML sin monedas\n"; return; }
@@ -667,7 +674,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->No_Cotizacion_OQUT)) { if($CLI) { echo "XML sin datos\n"; return; }
@@ -702,7 +709,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->No_Estatus_Cotizacion_OQUT)) { if($CLI) { echo "XML sin datos\n"; return; }
@@ -739,7 +746,7 @@ class Archivos_Sincronizasores extends Controller
          $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->No_Pedido_ORDR)) { if($CLI) { echo "XML sin datos\n"; return; }
@@ -772,7 +779,7 @@ class Archivos_Sincronizasores extends Controller
                 $errores++; Log::channel('sync')->error("ORDR: " . "Error al actualizar el pedido: ".$pedido->ID_COT_KombiShop. "=> " . $e->getMessage());
             }           
         }
-        $this->NoInsertados('C:\Users\KOM090\Documents\Nueva\PedidosNoInsertados\PedidosNoInsertados.xml', $CLI);
+        $this->NoInsertados('C:\SFTP_MiKombitec\data\PedidosNoInsertados\PedidosNoInsertados.xml', $CLI);
         return $this->Mensajes($total, $insertados, $errores, $CLI);
     }
 
@@ -781,7 +788,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml 
         
         
         if (!isset($xml->PedidosNoInsertados)) { if($CLI) { echo "XML sin datos\n"; return; }
@@ -808,7 +815,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->No_Estatus_Pedido_ORDR)) { if($CLI) { echo "XML sin datos\n"; return; }
@@ -844,7 +851,7 @@ class Archivos_Sincronizasores extends Controller
         $xml = $this->Archivos($rutaXml, $CLI);
 
         if ($xml === false) return;//muestra errores en la carga del xml
-        if (is_array($xml) && isset($xml['error'])) { return redirect()->back()->with('error', $xml['error']); } //Errores en WEB del xml
+        if (is_array($xml) && isset($xml['error'])) { return ['error' => $xml['error']]; } //Errores en WEB del xml
         
         
         if (!isset($xml->Stock)) { if($CLI) { echo "XML sin stock\n"; return; }
