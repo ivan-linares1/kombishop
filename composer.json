@@ -37,8 +37,6 @@
     },
     "scripts": {
         "post-autoload-dump": [
-            "@php artisan config:clear",
-            "@php artisan clear-compiled",
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
@@ -63,7 +61,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/pail"
+            ]
         }
     },
     "config": {
