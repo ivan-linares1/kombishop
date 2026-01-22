@@ -154,6 +154,7 @@ class PedidosController extends Controller
                 'vendedor' => $cotizacion->SlpCode,
                 'moneda'   => $cotizacion->DocCur,
                 'comentario' =>$cotizacion->comment,
+                'BaseEntry' =>$DocEntry,
             ];
 
             // 🔥 SIN O(n²)
@@ -161,6 +162,7 @@ class PedidosController extends Controller
                 if (isset($articulosPorCodigo[$linea->ItemCode])) {
                     $artClone = clone $articulosPorCodigo[$linea->ItemCode];
                     $artClone->Quantity = $linea->Quantity;
+                    $artClone->BaseLine = $linea->LineNum;
                     $lineasComoArticulos[] = $artClone;
                 }
             }

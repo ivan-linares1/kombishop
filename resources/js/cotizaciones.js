@@ -307,7 +307,9 @@ window.agregarArticulo = function(art) {
     fila.dataset.precioOriginal = art.precio.Price;
     fila.dataset.monedaOriginal = JSON.stringify(art.precio.moneda);
     fila.dataset.itmsGrpCod = art.ItmsGrpCod;
-    fila.dataset.baseline = art.BaseLine ?? null;  
+   if (art.BaseLine !== undefined && art.BaseLine !== null) {
+        fila.dataset.baseline = art.BaseLine;
+    }  
     fila.dataset.itemcode = art.ItemCode;
 
     const monedaCambioID = parseInt(document.querySelector('select[name="currency_id"]').value);

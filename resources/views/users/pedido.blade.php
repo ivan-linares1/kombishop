@@ -191,8 +191,8 @@ window.preseleccionadoClienteDireccionEntrega = @json($cotizacion->Address2 ?? $
 {{--FORMULARIO para mnadar los valores a guarda el pedido --}}  
 <form id="formCotizacionPedido" action="{{ route('PedidoSave') }}" method="POST">
     @csrf
-    <input type="hidden" name="cliente" id="aux" value="">
-    <input type="hidden" name="BaseEntry" id="BaseEntryP" value="{{ $cotizacion->DocEntry ?? ''}}">
+    <input type="hidden" name="cliente" id="aux" value="{{ $preseleccionados['BaseEntry'] ?? ''}}">
+    <input type="hidden" name="BaseEntry" id="BaseEntryP" value="{{ $preseleccionados['BaseEntry'] ?? ''}}">
     <input type="hidden" name="cliente" id="clienteP">
     <input type="hidden" name="fechaCreacion" id="fechaCreacionP">
     <input type="hidden" name="fechaEntrega" id="fechaEntregaP">
