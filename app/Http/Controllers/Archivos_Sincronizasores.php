@@ -477,13 +477,13 @@ class Archivos_Sincronizasores extends Controller
         if($rutaXml == 'C:\SFTP_MiKombitec\data\Descuentos_Cantidad_Actualiza_')
         {
             $rutaXmlN = $rutaXml.$Count_aux.'\Descuentos_Cantidad_Actualiza_'.$Count_aux.'.xml';  
-            Log::channel('sync')->notice("Inicio del servicio $Count_aux");    
+            Log::channel('sync_info')->notice("Inicio del servicio $Count_aux");    
         }
         else
         {
             $rutaXmlN = $rutaXml;
             $Count_aux = 4;
-            Log::channel('sync')->notice("Inicio del servicio de actualizacion ");
+            Log::channel('sync_info')->notice("Inicio del servicio de actualizacion ");
         }
             
         
@@ -540,17 +540,17 @@ class Archivos_Sincronizasores extends Controller
 
         if($Count_aux != 4)
         {
-            Log::channel('sync')->notice("Fin del servicio $Count_aux con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
+            Log::channel('sync_info')->notice("Fin del servicio $Count_aux con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
             $Count_aux++;
            return $this->DescuentosDetalle($rutaXml, $CLI, $Count_aux, $total + $total_i, $insertados + $insertados_i,  $warnings + $warnings_i, $errores + $errores_i);
         }
          if($rutaXmlN == $rutaXml)
-            Log::channel('sync')->notice("Fin del servicio de actualizacion con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
+            Log::channel('sync_info')->notice("Fin del servicio de actualizacion con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
         else
-            Log::channel('sync')->notice("Fin del servicio $Count_aux con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
+            Log::channel('sync_info')->notice("Fin del servicio $Count_aux con un total de $total; Insertados de $insertados; Warnings de $warnings; y de errores: $errores");
 
         $totalBD = $insertados + $insertados_i;
-        Log::channel('sync')->notice("Insertados o actualizados: $totalBD");
+        Log::channel('sync_info')->notice("Insertados o actualizados: $totalBD");
        
         return $this->Mensajes($total + $total_i, $insertados + $insertados_i + $warnings + $warnings_i, $errores + $errores_i, $CLI);
     }
