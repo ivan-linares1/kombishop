@@ -93,7 +93,7 @@ class CotizacionesController extends Controller
         $fechaEntrega  = $mañana;
 
         //$clientes = Clientes::with('descuentos.detalles.marca')->where('Active', 'Y')->get();
-        $clientes = [];
+        $clientes = null;
 
         $user = Auth::user();
         $vendedores = Vendedores::where('Active', 'Y')->get();
@@ -125,6 +125,9 @@ class CotizacionesController extends Controller
         }, 'imagen'])
         ->with('marca')
         ->get();
+        
+        //ÚNICA MEJORA REAL: indexar colección
+        $articulosPorCodigo = $articulos->keyBy('ItemCode');
 
 
         $modo = 0;
@@ -133,7 +136,7 @@ class CotizacionesController extends Controller
         $preseleccionados = [
            'cliente' => ($user->rol_id == 3) ? $user->codigo_cliente : null,
            'vendedor' => $user->rol_id == 4 ? $user->codigo_vendedor : ($user->rol_id == 3 ? $vendedorBase->SlpCode : null),
-           'moneda' => configuracion::firstOrFail()->MonedaPrincipal,
+           'moneda' => $configuracion->MonedaPrincipal,
         ];
 
         $lineasComoArticulos = [];
@@ -149,14 +152,11 @@ class CotizacionesController extends Controller
                 'comentario' =>$cotizacion->comment,
             ];
 
+            // 🔥 SIN O(n²)
             foreach ($cotizacion->lineas as $linea) {
-                $articulo = $articulos->firstWhere('ItemCode', $linea->ItemCode);
-
-                if ($articulo) {
-                    // Clonamos el objeto artículo y agregamos los datos de la cotización
-                    $artClone = clone $articulo;
-                    $artClone->Quantity  = $linea->Quantity;
-
+                if (isset($articulosPorCodigo[$linea->ItemCode])) {
+                    $artClone = clone $articulosPorCodigo[$linea->ItemCode];
+                    $artClone->Quantity = $linea->Quantity;
                     $lineasComoArticulos[] = $artClone;
                 }
             }

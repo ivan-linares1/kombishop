@@ -57,6 +57,12 @@ return [
             'level' => 'debug',
         ],
 
+        'sync_info' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/sync_info.log'),
+            'level' => 'debug',
+        ],
+
 
         'stack' => [
             'driver' => 'stack',
