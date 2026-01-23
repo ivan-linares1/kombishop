@@ -54,8 +54,7 @@
                 <div class="col-md-4 text-center">
                     @if($configuracion->ruta_logo_empresa)
                         <div class="bg-light rounded-3 shadow-sm "><a data-fancybox href="{{ asset('storage/' . $configuracion->ruta_logo_empresa) }}"> 
-                            <img src="{{ asset('storage/' . $configuracion->ruta_logo_empresa) }}" 
-                                 alt="Logo" class="img-fluid" style="width: 100%;  height: 100%; cursor:pointer;"></a>
+                            <img src="{{ asset('storage/' . $configuracion->ruta_logo_empresa) }}" alt="Logo" class="img-fluid" style="width: 100%;  height: 100%; cursor:pointer;"></a>
                         </div>
                     @else
                         <div class="border rounded-3 py-5 text-muted bg-light shadow-sm">
@@ -67,8 +66,7 @@
 
                     @if($configuracion->ruta_logo_principal)
                         <div class="bg-light rounded-3 shadow-sm "><a data-fancybox href="{{ asset('storage/' . $configuracion->ruta_logo_principal) }}"> 
-                            <img src="{{ asset('storage/' . $configuracion->ruta_logo_principal) }}" 
-                                 alt="Logo" class="img-fluid" style="width: 100%;  height: 100%; cursor:pointer;"></a>
+                            <img src="{{ asset('storage/' . $configuracion->ruta_logo_principal) }}" alt="Logo" height="100" class="rounded shadow-sm border" style="hcursor:pointer;"></a>
                         </div>
                     @else
                         <div class="border rounded-3 py-5 text-muted bg-light shadow-sm">
@@ -80,8 +78,7 @@
 
                     @if($configuracion->ruta_logo_login)
                         <div class="bg-light rounded-3 shadow-sm "><a data-fancybox href="{{ asset('storage/' . $configuracion->ruta_logo_login) }}"> 
-                            <img src="{{ asset('storage/' . $configuracion->ruta_logo_login) }}" 
-                                 alt="Logo" class="img-fluid" style="width: 100%;  height: 100%; cursor:pointer;"></a>
+                            <img src="{{ asset('storage/' . $configuracion->ruta_logo_login) }}" alt="Logo" height="100" class="rounded shadow-sm border" style="hcursor:pointer;"></a>
                         </div>
                     @else
                         <div class="border rounded-3 py-5 text-muted bg-light shadow-sm">
@@ -197,21 +194,21 @@
             </div><br>
 
             <div class="col-md-8">
-                <label for="ruta_logo" class="form-label fw-bold"><i class="bi bi-image me-1"></i> Logo Principal</label>
-                <input type="file" name="ruta_logo" id="ruta_logo" class="form-control">
-                @if($configuracion->ruta_logo)
+                <label for="ruta_logo_principal" class="form-label fw-bold"><i class="bi bi-image me-1"></i> Logo Principal</label>
+                <input type="file" name="ruta_logo_principal" id="ruta_logo_principal" class="form-control">
+                @if($configuracion->ruta_logo_principal)
                     <div class="mt-2">
-                        <img src="{{ asset('storage/' . $configuracion->ruta_logo) }}" alt="Logo" height="80" class="rounded shadow-sm border">
+                        <img src="{{ asset('storage/' . $configuracion->ruta_logo_principal) }}" alt="Logo" height="80" class="rounded shadow-sm border">
                     </div>
                 @endif
             </div><br>
 
             <div class="col-md-8">
-                <label for="ruta_logo" class="form-label fw-bold"><i class="bi bi-image me-1"></i> Logo Login</label>
-                <input type="file" name="ruta_logo" id="ruta_logo" class="form-control">
-                @if($configuracion->ruta_logo)
+                <label for="ruta_logo_login" class="form-label fw-bold"><i class="bi bi-image me-1"></i> Logo Login</label>
+                <input type="file" name="ruta_logo_login" id="ruta_logo_login" class="form-control">
+                @if($configuracion->ruta_logo_login)
                     <div class="mt-2">
-                        <img src="{{ asset('storage/' . $configuracion->ruta_logo) }}" alt="Logo" height="80" class="rounded shadow-sm border">
+                        <img src="{{ asset('storage/' . $configuracion->ruta_logo_login) }}" alt="Logo" height="80" class="rounded shadow-sm border">
                     </div>
                 @endif
             </div>

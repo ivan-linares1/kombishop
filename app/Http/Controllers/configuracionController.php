@@ -63,24 +63,34 @@ class configuracionController extends Controller
             'MonedaPrincipal' => 'nullable',
         ]);
 
-        $data = $request->except('ruta_logo_empresa');
-        $data = $request->except('ruta_logo_principal');
-        $data = $request->except('ruta_logo_login');
-
+        $data = $request->except([
+            'ruta_logo_empresa',
+            'ruta_logo_principal',
+            'ruta_logo_login',
+        ]);
 
         if ($request->hasFile('ruta_logo_empresa')) {
-            $path = $request->file('ruta_logo_empresa')->store('logos', 'public');
+            $file = $request->file('ruta_logo_empresa');
+            $extension = $file->getClientOriginalExtension();
+            $filename = 'logo_empresa.' . $extension;
+            $path = $file->storeAs('logos', $filename, 'public');
             $data['ruta_logo_empresa'] = $path;
         }
 
-        if ($request->hasFile('ruta_logo_login')) {
-            $path = $request->file('ruta_logo_login')->store('logos', 'public');
-            $data['ruta_logo_login'] = $path;
+        if ($request->hasFile('ruta_logo_principal')) {
+            $file = $request->file('ruta_logo_principal');
+            $extension = $file->getClientOriginalExtension();
+            $filename = 'logo_principal.' . $extension;
+            $path = $file->storeAs('logos', $filename, 'public');
+            $data['ruta_logo_principal'] = $path;
         }
 
-        if ($request->hasFile('ruta_logo_principal')) {
-            $path = $request->file('ruta_logo_principal')->store('logos', 'public');
-            $data['ruta_logo_principal'] = $path;
+        if ($request->hasFile('ruta_logo_login')) {
+            $file = $request->file('ruta_logo_login');
+            $extension = $file->getClientOriginalExtension();
+            $filename = 'logo_login.' . $extension;
+            $path = $file->storeAs('logos', $filename, 'public');
+            $data['ruta_logo_login'] = $path;
         }
 
         $config->update($data);

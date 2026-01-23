@@ -7,7 +7,9 @@
 
 {{-- titulo y logo --}}
     <div class="logo-section text-center">
-        <a href="{{ route('dashboard') }}"><img src="{{ asset('storage/logos/En_Construccion.jpeg') }}" alt="Logo" class="logo-img mb-2"></a>
+        <a href="{{ route('dashboard') }}">
+            <img src="{{ asset('storage/' . $configuracion->ruta_logo_principal) }}"  alt="Logo" class="logo-img mb-2">
+        </a>
         <a href="https://www.kombitec.com.mx/" class="brand-text d-block">MI KOMBITEC</a>
     </div>
 {{-- Dashboard --}}

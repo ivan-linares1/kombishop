@@ -11,7 +11,9 @@ class configuracion extends Model
 
     protected $fillable = [
         'iva',
-        'ruta_logo',
+        'ruta_logo_empresa',
+        'ruta_logo_principal',
+        'ruta_logo_login',
         'nombre_empresa',
         'calle',
         'colonia',
