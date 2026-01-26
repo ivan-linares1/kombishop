@@ -148,7 +148,7 @@ $(document).ready(function() {
 // ================================
 function actualizarDatosCliente() {
     const cliente = $('#selectCliente').select2('data')[0]; // obtiene el cliente seleccionado
-    if (!cliente) return;
+    if (!cliente || !cliente.id) { limpiarDatosCliente(); return;}
 
     // Si es un <option>, saca los data-* desde dataset
     const el = cliente.element || cliente; // soporte por si viene del objeto interno
@@ -174,9 +174,21 @@ function actualizarDatosCliente() {
             $('#direccionEntrega').text(data.entrega);
         },
         error: function () {
-            alert('No se pudieron obtener las direcciones del cliente.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops…',
+                text: 'No se pudieron obtener las direcciones del cliente.',
+                confirmButtonText: 'Entendido'
+            });
         }
     });
+}
+
+function limpiarDatosCliente() {
+    $('#telefono').html('');
+    $('#correo').html('');
+    $('#direccionFiscal').html('');
+    $('#direccionEntrega').html('');
 }
 
 
